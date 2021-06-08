@@ -19,7 +19,7 @@ namespace PracticeWebApp.Models
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
             Database.EnsureCreated();
             
         }
@@ -57,9 +57,9 @@ namespace PracticeWebApp.Models
             new User[]
             {
                 new User {Id=1, FirstName="Tom", LastName="Moriarty", Address = "Vul pushkina dom kolotushkina", DateOfBirth = DateTime.Now, 
-                    PhoneNumber = "+38096758", UserRoleId = 1},
+                    PhoneNumber = "+38096758", Email="test@gmail.com", Password="1234", UserRoleId = 1},
                 new User {Id=2, FirstName="Alex", LastName="Svytshch", Address = "Zubrivska 19", DateOfBirth = DateTime.Now,
-                    PhoneNumber = "+38096758", UserRoleId = 2}
+                    PhoneNumber = "+38096758",Email="test2@gmail.com", Password="12345", UserRoleId = 2}
             });
 
             

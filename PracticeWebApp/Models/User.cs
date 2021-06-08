@@ -30,7 +30,12 @@ namespace PracticeWebApp.Models
         public string PhoneNumber { get; set; }
         [DisplayName("id Тип користувача")]
         public int UserRoleId { get; set; }
-
+        [DisplayName("Email")]
+        [Required(ErrorMessage = "Не вказаний Email")]
+        public string Email { get; set; }
+        [DisplayName("Пароль")]
+        [Required(ErrorMessage = "Не вказаний пароль")]
+        public string Password { get; set; }
         [DisplayName("Тип користувача")]
         public virtual UserRole UserRole{ get; set; }
 
