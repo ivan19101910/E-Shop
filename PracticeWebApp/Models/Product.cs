@@ -20,11 +20,13 @@ namespace PracticeWebApp.Models
         public string Name { get; set; }
         [DisplayName("Опис")]
         public string Description { get; set; }
-        [DisplayName("Категорія товару")]
-        public int ProductCategoryId { get; set; }
+        
+        [DisplayName("Підкатегорія товару")]
+        public int ProductSubcategoryId { get; set; }
 
-        [DisplayName("Категорія товару")]
-        public virtual ProductCategory ProductCategory { get; set; }
+        
+        [DisplayName("Підкатегорія товару")]
+        public virtual ProductSubcategory ProductSubcategory { get; set; }
 
         public List<Cart> Cart { get; set; } = new List<Cart>();
         public List<CartProduct> CartProduct { get; set; } = new List<CartProduct>();

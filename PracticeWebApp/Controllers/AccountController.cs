@@ -79,7 +79,7 @@ namespace PracticeWebApp.Controllers
            
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, $"{user.FirstName} {user.LastName}"),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.UserRole?.Name)
             };
             

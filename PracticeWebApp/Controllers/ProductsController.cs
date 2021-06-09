@@ -21,7 +21,7 @@ namespace PracticeWebApp.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Products.Include(p => p.ProductCategory);
+            var appDbContext = _context.Products.Include(p => p.ProductSubcategory);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace PracticeWebApp.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.ProductCategory)
+                .Include(p => p.ProductSubcategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -47,7 +47,7 @@ namespace PracticeWebApp.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategories, "Id", "Id");
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.Set<ProductSubcategory>(), "Id", "Id");
             return View();
         }
 
@@ -56,7 +56,7 @@ namespace PracticeWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Price,Name,Description,ProductCategoryId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Price,Name,Description,ProductSubcategoryId")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +64,7 @@ namespace PracticeWebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategories, "Id", "Id", product.ProductCategoryId);
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.Set<ProductSubcategory>(), "Id", "Id", product.ProductSubcategoryId);
             return View(product);
         }
 
@@ -81,7 +81,7 @@ namespace PracticeWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategories, "Id", "Id", product.ProductCategoryId);
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.Set<ProductSubcategory>(), "Id", "Id", product.ProductSubcategoryId);
             return View(product);
         }
 
@@ -90,7 +90,7 @@ namespace PracticeWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,ProductCategoryId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,ProductSubcategoryId")] Product product)
         {
             if (id != product.Id)
             {
@@ -117,7 +117,7 @@ namespace PracticeWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductCategoryId"] = new SelectList(_context.ProductCategories, "Id", "Id", product.ProductCategoryId);
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.Set<ProductSubcategory>(), "Id", "Id", product.ProductSubcategoryId);
             return View(product);
         }
 
@@ -130,7 +130,7 @@ namespace PracticeWebApp.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.ProductCategory)
+                .Include(p => p.ProductSubcategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {

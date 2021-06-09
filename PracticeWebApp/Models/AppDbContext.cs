@@ -19,7 +19,7 @@ namespace PracticeWebApp.Models
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
             
         }
@@ -62,8 +62,29 @@ namespace PracticeWebApp.Models
                     PhoneNumber = "+38096758",Email="test2@gmail.com", Password="12345", UserRoleId = 2}
             });
 
-            
+            modelBuilder.Entity<ProductCategory>().HasData(
+            new ProductCategory[]
+            {
+                new ProductCategory{ Id=1, Name="Електроніка"},
+                new ProductCategory { Id=2, Name="Підвіска та рульове"},
+                new ProductCategory { Id=3, Name="Коробка передач та трансмісія"}
+            });
+
+            modelBuilder.Entity<ProductSubcategory>().HasData(
+            new ProductSubcategory[]
+            {
+                new ProductSubcategory{ Id=1, CategoryId = 1, Name="Акустичні системи"},
+                new ProductSubcategory{ Id=2, CategoryId = 1, Name="Парковочні системи"},
+                new ProductSubcategory{ Id=3, CategoryId = 2, Name="Підвіска"},
+                new ProductSubcategory{ Id=4, CategoryId = 2, Name="Рульове"},
+                new ProductSubcategory{ Id=5, CategoryId = 3, Name="Зчеплення"},
+                new ProductSubcategory{ Id=6, CategoryId = 3, Name="Запчастини трансмісії"},
+            });
+
+
         }
+
+        public DbSet<PracticeWebApp.Models.ProductSubcategory> ProductSubcategory { get; set; }
     }
     
 }
