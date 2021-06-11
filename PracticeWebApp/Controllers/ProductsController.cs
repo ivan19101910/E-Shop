@@ -19,11 +19,18 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var appDbContext = _context.Products.Include(p => p.ProductSubcategory);
-            return View(await appDbContext.ToListAsync());
+            var products = _context.Products.Include(p => p.ProductSubcategory).Select(x=>x);
+            if (id.HasValue)
+            {
+                products = products.Where(x => x.ProductSubcategoryId == id);
+            }
+            //var appDbContext = _context.Products.Include(p => p.ProductSubcategory);
+            return View(await products.ToListAsync());
         }
+
+        
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -8,13 +8,13 @@ namespace PracticeWebApp.Models
 {
     public class CartProduct
     {
-        public int CartId { get; set; }
+        public int UserId { get; set; }
 
         public int ProductId { get; set; }
 
-        public int Amount { get; set; }
+        public int Amount { get; set; } = 0;
 
-        public virtual Cart Cart { get; set; }
+        public virtual User User { get; set; }
 
         public virtual Product Product { get; set; }
     }

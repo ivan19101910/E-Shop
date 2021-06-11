@@ -36,10 +36,11 @@
                 <div>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a>Ви увійшли як: @User.Identity.Name</a>
-                        <a href="/Workers/Logout">
+                        <a>Користувач: @User.Identity.Name</a>
+                        <a href="/Account/Logout">
                             Вийти
                         </a>
+                        <a asp-action="Index" asp-controller="CartProducts">Корзина</a>
                     }
                 </div>
             </div>

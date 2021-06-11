@@ -38,6 +38,8 @@ namespace PracticeWebApp.Models
         public string Password { get; set; }
         [DisplayName("Тип користувача")]
         public virtual UserRole UserRole{ get; set; }
+        public List<Product> Product { get; set; } = new List<Product>();
+        public List<CartProduct> CartProduct { get; set; } = new List<CartProduct>();
 
         //public virtual ICollection<Appointment> Appointments { get; set; }
     }

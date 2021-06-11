@@ -79,7 +79,8 @@ namespace PracticeWebApp.Controllers
            
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, $"{user.FirstName} {user.LastName}"),
+                //new Claim(ClaimsIdentity.DefaultNameClaimType, $"{user.FirstName} {user.LastName}"),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.UserRole?.Name)
             };
             
@@ -87,6 +88,11 @@ namespace PracticeWebApp.Controllers
                 ClaimsIdentity.DefaultRoleClaimType);
             
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Account");
         }
     }
 }

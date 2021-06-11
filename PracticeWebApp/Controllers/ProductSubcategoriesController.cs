@@ -17,12 +17,20 @@ namespace PracticeWebApp.Controllers
         {
             _context = context;
         }
-
+        //Id for case when we need to get all subcategories in certain category
         // GET: ProductSubcategories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var appDbContext = _context.ProductSubcategory.Include(p => p.Category);
-            return View(await appDbContext.ToListAsync());
+            var subcategories = _context.ProductSubcategory.Include(p => p.Category).Select(x=>x);
+            if (id.HasValue)
+            {
+                subcategories = subcategories.Where(x => x.CategoryId == id);
+            }
+
+            //var appDbContext = _context.ProductSubcategory.Include(p => p.Category);
+            
+            
+            return View(await subcategories.ToListAsync());
         }
 
         // GET: ProductSubcategories/Details/5

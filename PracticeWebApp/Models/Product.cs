@@ -28,7 +28,7 @@ namespace PracticeWebApp.Models
         [DisplayName("Підкатегорія товару")]
         public virtual ProductSubcategory ProductSubcategory { get; set; }
 
-        public List<Cart> Cart { get; set; } = new List<Cart>();
+        public List<User> User { get; set; } = new List<User>();
         public List<CartProduct> CartProduct { get; set; } = new List<CartProduct>();
         //public virtual ICollection<AppointmentService> AppointmentServices { get; set; }
     }
