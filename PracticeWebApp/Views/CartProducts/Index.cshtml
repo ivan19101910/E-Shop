@@ -5,7 +5,7 @@
 }
 
 <h1>Index</h1>
-
+<a asp-action="Create" asp-controller="Orders" class="btn btn-outline-success">Оформити замовлення</a>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -37,9 +37,13 @@
                 @Html.DisplayFor(modelItem => item.Product.Id)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                @*<a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
+        <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |*@
+                <a asp-action="Buy" asp-route-id="@item.ProductId">+</a>
+                <a asp-action="DeleteFromCart" asp-route-id="@item.ProductId">-</a>
             </td>
         </tr>
 }

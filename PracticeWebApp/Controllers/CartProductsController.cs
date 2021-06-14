@@ -50,6 +50,31 @@ namespace PracticeWebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteFromCart(int id)
+        {
+            var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
+            var cartProduct = _context.CartProducts.Where(x => x.ProductId == id && x.UserId == user.Id).FirstOrDefault();
+            if (cartProduct.Amount > 1)
+            {
+                --cartProduct.Amount;
+                _context.Update(cartProduct);
+            }
+            else
+            {
+                _context.CartProducts.Remove(cartProduct);                               
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            /*
+            var cartProduct = await _context.CartProducts.FindAsync(id);
+            _context.CartProducts.Remove(cartProduct);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+            */
+        }
+
         // GET: CartProducts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -152,35 +177,36 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: CartProducts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //Maybe need to check userId?
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var cartProduct = await _context.CartProducts
-                .Include(c => c.Product)
-                .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.ProductId == id);
-            if (cartProduct == null)
-            {
-                return NotFound();
-            }
+        //    var cartProduct = await _context.CartProducts
+        //        .Include(c => c.Product)
+        //        .Include(c => c.User)
+        //        .FirstOrDefaultAsync(m => m.ProductId == id);
+        //    if (cartProduct == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(cartProduct);
-        }
+        //    return View(cartProduct);
+        //}
 
-        // POST: CartProducts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var cartProduct = await _context.CartProducts.FindAsync(id);
-            _context.CartProducts.Remove(cartProduct);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //// POST: CartProducts/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var cartProduct = await _context.CartProducts.FindAsync(id);
+        //    _context.CartProducts.Remove(cartProduct);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool CartProductExists(int id)
         {

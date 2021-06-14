@@ -13,9 +13,14 @@ namespace PracticeWebApp.Models
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
-        //public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        //public DbSet<Order> OrderProducts { get; set; }
+        public DbSet<ProductSubcategory> ProductSubcategory { get; set; }
 
+        public DbSet<PostService> PostServices { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
@@ -24,22 +29,20 @@ namespace PracticeWebApp.Models
             
         }
 
-        //public DbSet<Cart> Cart { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .Entity<Product>()
-                .HasMany(c => c.User)
-                .WithMany(s => s.Product)
-                .UsingEntity <CartProduct> (
+                .HasMany(c => c.Users)
+                .WithMany(s => s.Products)
+                .UsingEntity<CartProduct>(
                    j => j
                     .HasOne(pt => pt.User)
                     .WithMany(t => t.CartProduct)
                     .HasForeignKey(pt => pt.UserId),
                 j => j
                     .HasOne(pt => pt.Product)
-                    .WithMany(p => p.CartProduct)
+                    .WithMany(p => p.CartProducts)
                     .HasForeignKey(pt => pt.ProductId),
                 j =>
                 {
@@ -47,6 +50,36 @@ namespace PracticeWebApp.Models
                     j.ToTable("CartProduct");
                 }
             );
+
+            modelBuilder
+                .Entity<Order>()
+                .HasMany(c => c.Products)
+                .WithMany(s => s.Orders)
+                .UsingEntity <OrderProduct> (
+                   j => j
+                    .HasOne(pt => pt.Product)
+                    .WithMany(t => t.OrderProducts)
+                    .HasForeignKey(pt => pt.ProductId),
+                j => j
+                    .HasOne(pt => pt.Order)
+                    .WithMany(p => p.OrderProducts)
+                    .HasForeignKey(pt => pt.OrderId),
+                j =>
+                {
+                    j.HasKey(t => new { t.ProductId, t.OrderId });
+                    j.ToTable("OrderProduct");
+                }
+            );
+            
+            //modelBuilder.Entity<Order>(entity =>
+            //{
+            //    entity.HasOne(d => d.Status)
+            //        .WithMany(p => p.Orders)
+            //        .HasForeignKey(d => d.StatusId)
+            //        .OnDelete(DeleteBehavior.ClientSetNull);
+            //        //.HasConstraintName("Appointment_AppointmentStatus_FK");
+            //});
+
             modelBuilder.Entity<UserRole>().HasData(
             new UserRole[]
             {
@@ -81,21 +114,44 @@ namespace PracticeWebApp.Models
                 new ProductSubcategory{ Id=6, CategoryId = 3, Name="Запчастини трансмісії"},
             });
 
+            byte[] bytes = { 0, 0, 0, 25 };
+
             modelBuilder.Entity<Product>().HasData(
             new Product[]
             {
-                new Product{ Id=1,Price= 1003,Name="test1",Description="Description", ProductSubcategoryId = 1},
-                new Product{ Id=2,Price= 1003,Name="test2",Description="Description", ProductSubcategoryId = 1},
-                new Product{ Id=3,Price= 1003,Name="test3",Description="Description", ProductSubcategoryId = 2},
-                new Product{ Id=4,Price= 1003,Name="test4",Description="Description", ProductSubcategoryId = 2},
-                new Product{ Id=5,Price= 1003,Name="test5",Description="Description", ProductSubcategoryId = 3},
-                new Product{ Id=6,Price= 1003,Name="test6",Description="Description", ProductSubcategoryId = 3},
+                new Product{ Id=1,Image = bytes, Price= 1003,Name="test1",Description="Description", ProductSubcategoryId = 1},
+                new Product{ Id=2,Image = bytes, Price= 1003,Name="test2",Description="Description", ProductSubcategoryId = 1},
+                new Product{ Id=3,Image = bytes, Price= 1003,Name="test3",Description="Description", ProductSubcategoryId = 2},
+                new Product{ Id=4,Image = bytes, Price= 1003,Name="test4",Description="Description", ProductSubcategoryId = 2},
+                new Product{ Id=5,Image = bytes, Price= 1003,Name="test5",Description="Description", ProductSubcategoryId = 3},
+                new Product{ Id=6,Image = bytes, Price= 1003,Name="test6",Description="Description", ProductSubcategoryId = 3},
             });
 
+            modelBuilder.Entity<OrderStatus>().HasData(
+            new OrderStatus[]
+            {
+                new OrderStatus{ Id=1,Name="Нове замовлення"},
+                new OrderStatus{ Id=2,Name="Комплектується"},
+                new OrderStatus{ Id=3,Name="Відправлено"},
+                new OrderStatus{ Id=4,Name="Отримано"},
+            });
+
+            modelBuilder.Entity<PostService>().HasData(
+            new PostService[]
+            {
+                new PostService{ Id=1,Name="Нова пошта"},
+            });
+
+            //modelBuilder.Entity<Order>().HasData(
+            //new Order[]
+            //{
+            //    new Order{ Id=1,UserId = 1, ProductId = 1, Amount = 1, Total = 123, Description = "", StatusId = 1},
+            //    new Order{ Id=2,UserId = 1, ProductId = 1, Amount = 1, Total = 123, Description = "", StatusId = 1},
+            //});
 
         }
 
-        public DbSet<PracticeWebApp.Models.ProductSubcategory> ProductSubcategory { get; set; }
+        
     }
     
 }

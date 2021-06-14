@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +23,7 @@ namespace PracticeWebApp.Controllers
         // GET: Products
         public async Task<IActionResult> Index(int? id)
         {
-            var products = _context.Products.Include(p => p.ProductSubcategory).Select(x=>x);
+            var products = _context.Products.Include(p => p.ProductSubcategory).Select(x => x);
             if (id.HasValue)
             {
                 products = products.Where(x => x.ProductSubcategoryId == id);
@@ -29,8 +31,6 @@ namespace PracticeWebApp.Controllers
             //var appDbContext = _context.Products.Include(p => p.ProductSubcategory);
             return View(await products.ToListAsync());
         }
-
-        
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -54,7 +54,7 @@ namespace PracticeWebApp.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.Set<ProductSubcategory>(), "Id", "Id");
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.ProductSubcategory, "Id", "Id");
             return View();
         }
 
@@ -63,15 +63,23 @@ namespace PracticeWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Price,Name,Description,ProductSubcategoryId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Image,Price,Name,Description,ProductSubcategoryId")] Product product, IFormFile uploadImage)
         {
             if (ModelState.IsValid)
             {
+                byte[] imageData = null;
+                // считываем переданный файл в массив байтов
+                using (var binaryReader = new BinaryReader(uploadImage.OpenReadStream()))
+                {
+                    imageData = binaryReader.ReadBytes((int)uploadImage.Length);
+                }
+                // установка массива байтов
+                product.Image = imageData;
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.Set<ProductSubcategory>(), "Id", "Id", product.ProductSubcategoryId);
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.ProductSubcategory, "Id", "Id", product.ProductSubcategoryId);
             return View(product);
         }
 
@@ -88,7 +96,7 @@ namespace PracticeWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.Set<ProductSubcategory>(), "Id", "Id", product.ProductSubcategoryId);
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.ProductSubcategory, "Id", "Id", product.ProductSubcategoryId);
             return View(product);
         }
 
@@ -97,7 +105,7 @@ namespace PracticeWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Price,Name,Description,ProductSubcategoryId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Image,Price,Name,Description,ProductSubcategoryId")] Product product)
         {
             if (id != product.Id)
             {
@@ -124,7 +132,7 @@ namespace PracticeWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.Set<ProductSubcategory>(), "Id", "Id", product.ProductSubcategoryId);
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.ProductSubcategory, "Id", "Id", product.ProductSubcategoryId);
             return View(product);
         }
 
