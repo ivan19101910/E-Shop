@@ -14,7 +14,7 @@ namespace PracticeWebApp.Models
         }
 
         public int Id { get; set; }
-
+        [DisplayName("Підкатегорія")]
         public string Name { get; set; }
 
         [DisplayName("Категорія товару")]

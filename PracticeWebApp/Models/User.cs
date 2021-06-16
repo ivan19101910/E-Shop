@@ -28,7 +28,7 @@ namespace PracticeWebApp.Models
         public DateTime DateOfBirth { get; set; }
         [DisplayName("Номер телефону")]
         public string PhoneNumber { get; set; }
-        [DisplayName("id Тип користувача")]
+        [DisplayName("Тип користувача")]
         public int UserRoleId { get; set; }
         [DisplayName("Email")]
         [Required(ErrorMessage = "Не вказаний Email")]
@@ -42,6 +42,8 @@ namespace PracticeWebApp.Models
         public List<CartProduct> CartProduct { get; set; } = new List<CartProduct>();
 
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+        public virtual ICollection<Comment> Comments { get; set; }
         //public List<OrderProduct> OrderProduct { get; set; } = new List<OrderProduct>();
     }
 }

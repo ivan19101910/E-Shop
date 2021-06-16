@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -47,11 +48,18 @@ namespace PracticeWebApp.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["Comments"] =//HERE PROBLEM
+                new List<Comment>(_context.Comments
+                .Include(x => x.User)
+                .Include(x => x.Product)
+                .Include(x => x.RepliedComments)
+                .ThenInclude(x=>x.RepliedComment)
+                .Where(x => x.Product.Id == id));
             return View(product);
         }
 
         // GET: Products/Create
+        [Authorize(Roles = "Адміністратор")]
         public IActionResult Create()
         {
             ViewData["ProductSubcategoryId"] = new SelectList(_context.ProductSubcategory, "Id", "Id");
@@ -63,6 +71,7 @@ namespace PracticeWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Create([Bind("Id,Image,Price,Name,Description,ProductSubcategoryId")] Product product, IFormFile uploadImage)
         {
             if (ModelState.IsValid)
@@ -84,6 +93,7 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: Products/Edit/5
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -105,6 +115,7 @@ namespace PracticeWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Image,Price,Name,Description,ProductSubcategoryId")] Product product)
         {
             if (id != product.Id)
@@ -137,6 +148,7 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: Products/Delete/5
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -158,6 +170,7 @@ namespace PracticeWebApp.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Products.FindAsync(id);

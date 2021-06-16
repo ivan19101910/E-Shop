@@ -21,20 +21,21 @@
                         @if (User.IsInRole("Адміністратор"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">На головну</a>
                             </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ProductCategories" asp-action="Index">Товари</a>
                         </li>
                         @if (User.IsInRole("Адміністратор"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Замовлення</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="IndexAll">Замовлення</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Користувачі</a>
+                            </li>
+
                         }
                     </ul>
 
@@ -47,6 +48,7 @@
                             Вийти
                         </a>
                         <a asp-action="Index" asp-controller="CartProducts">Корзина</a>
+                        <a asp-action="Index" asp-controller="Orders">Мої замовлення</a>
                     }
                 </div>
             </div>
@@ -60,7 +62,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - Autoshop - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - Autoshop - <a asp-area="" asp-controller="Home" asp-action="Privacy">Умови використання сайту</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

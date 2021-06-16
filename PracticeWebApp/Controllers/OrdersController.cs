@@ -18,10 +18,16 @@ namespace PracticeWebApp.Controllers
         {
             _context = context;
         }
-
+        [Authorize(Roles = "Адміністратор, Покупець")]
+        public async Task<IActionResult> Index()
+        {
+            var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
+            var appDbContext = _context.Orders.Include(o => o.Status).Include(o => o.User).Where(x => x.UserId == user.Id);
+            return View(await appDbContext.ToListAsync());
+        }
         // GET: Orders
         [Authorize(Roles = "Адміністратор")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> IndexAll()
         {
             var appDbContext = _context.Orders.Include(o => o.Status).Include(o => o.User);
             return View(await appDbContext.ToListAsync());
@@ -34,16 +40,22 @@ namespace PracticeWebApp.Controllers
             {
                 return NotFound();
             }
-
+            
             var order = await _context.Orders
                 .Include(o => o.Status)
                 .Include(o => o.User)
+                .Include(o=>o.PostService)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (order == null)
             {
                 return NotFound();
             }
-
+            ViewData["OrderProducts"] = 
+                new List<OrderProduct>(_context.OrderProducts
+                .Include(x => x.Order)
+                .Include(x=>x.Product)
+                .Where(x => x.Order.UserId == order.UserId && x.OrderId == order.Id));
             return View(order);
         }
 
@@ -54,6 +66,7 @@ namespace PracticeWebApp.Controllers
         //    ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email");
         //    return View();
         //}
+        [Authorize(Roles = "Адміністратор, Покупець")]
         public IActionResult Create()
         {
             //var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
@@ -72,6 +85,16 @@ namespace PracticeWebApp.Controllers
             return View();
         }
 
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //[Authorize(Roles = "Адміністратор")]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var order = await _context.Orders.FindAsync(id);
+        //    _context.Orders.Remove(order);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
         // POST: Orders/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -118,6 +141,7 @@ namespace PracticeWebApp.Controllers
         //}
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Адміністратор, Покупець")]
         public async Task<IActionResult> Create([Bind("Id,Total,PostServiceId, City, PostDepartmentAddress")] Order order)
         {
             var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
@@ -128,6 +152,7 @@ namespace PracticeWebApp.Controllers
                 order.Total = 1234;
                 order.Description = "Desc";
                 order.StatusId = 1;
+                order.CreatedDateTime = DateTime.UtcNow;
 
                 _context.Add(order);
                 await _context.SaveChangesAsync();
@@ -136,10 +161,16 @@ namespace PracticeWebApp.Controllers
                     _context.Add(new OrderProduct { OrderId = order.Id, ProductId = cartProduct.ProductId, Amount = cartProduct.Amount });
                 }
 
+                
+                foreach (var el in cartProducts)
+                {
+                    _context.CartProducts.Remove(el);
+                }
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
                 return Redirect("~/Home/Index");
             }
+            
             ViewData["StatusId"] = new SelectList(_context.OrderStatuses, "Id", "Id", order.StatusId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", order.UserId);
             //return View(order);
@@ -159,7 +190,7 @@ namespace PracticeWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["StatusId"] = new SelectList(_context.OrderStatuses, "Id", "Id", order.StatusId);
+            ViewData["StatusId"] = new SelectList(_context.OrderStatuses, "Id", "Name", order.StatusId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", order.UserId);
             return View(order);
         }

@@ -4,61 +4,41 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-            @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductSubcategory)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>*@
-            <td>
-                @Html.Raw("<img style='width:80px; height:60px;' src=\"data:image/jpeg;base64,"
-                                    + Convert.ToBase64String(item.Image) + "\" />")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductSubcategory.Id)
-            </td>
-            <td>
-                <a asp-action="Buy" asp-controller="CartProducts" asp-route-id="@item.Id">Купити</a>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+<h1>Товари</h1>
+@if (User.IsInRole("Адміністратор"))
+{
+    <p>
+        <a asp-action="Create">Створити новий товар</a>
+    </p>
 }
-    </tbody>
-</table>
+<div class="col-md-12 products">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-3">
+                <div class="product-wrap">
+                    <div class="product-item">
+                        @*<img src="https://html5book.ru/wp-content/uploads/2015/10/black-dress.jpg">*@
+                        @Html.Raw("<img style='width:270px; height:270px;' src=\"data:image/jpeg;base64,"
+                                         + Convert.ToBase64String(item.Image) + "\" />")
+                        <div class="product-buttons">
+                            <a class="button" asp-action="Buy" asp-controller="CartProducts" asp-route-id="@item.Id">В корзину</a>
+                            @*<a href="" class="button">В корзину</a>*@
+                        </div>
+                    </div>
+                    <div class="product-title">
+                        <a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Name) </a>
+                        @*<a href="">@Html.DisplayFor(modelItem => item.Name)</a>*@
+                    <span class="product-price">
+                        @Html.DisplayFor(modelItem => item.Price) ₴
+                    </span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+

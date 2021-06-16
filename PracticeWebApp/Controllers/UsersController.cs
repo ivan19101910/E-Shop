@@ -87,7 +87,8 @@ namespace PracticeWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserRoleId"] = new SelectList(_context.UserRoles, "Id", "Id", user.UserRoleId);
+            //ViewData["UserRoleId"] = new SelectList(_context.UserRoles, "Id", "Id", user.UserRoleId);
+            ViewData["UserRoleId"] = new SelectList(_context.UserRoles, "Id", "Name", user.UserRoleId);
             return View(user);
         }
 

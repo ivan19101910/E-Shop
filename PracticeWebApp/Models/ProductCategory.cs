@@ -14,7 +14,7 @@ namespace PracticeWebApp.Models
         }
 
         public int Id { get; set; }
-        [DisplayName("Тип послуги")]
+        [DisplayName("Категорія")]
         public string Name { get; set; }
 
         public virtual ICollection<Product> Product { get; set; }

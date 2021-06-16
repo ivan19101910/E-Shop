@@ -4,9 +4,8 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Редагування даних користувача</h1>
 
-<h4>User</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -40,18 +39,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="UserRoleId" class="control-label"></label>
-                <select asp-for="UserRoleId" class="form-control" asp-items="ViewBag.UserRoleId"></select>
+                <select asp-for="UserRole.Name" class="form-control" asp-items="ViewBag.UserRoleId"></select>
                 <span asp-validation-for="UserRoleId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Зберегти" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Повернутися до списку користувачів</a>
 </div>
 
 @section Scripts {

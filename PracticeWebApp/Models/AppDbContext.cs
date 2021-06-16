@@ -17,6 +17,8 @@ namespace PracticeWebApp.Models
         public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+
         //public DbSet<Order> OrderProducts { get; set; }
         public DbSet<ProductSubcategory> ProductSubcategory { get; set; }
 
@@ -70,15 +72,58 @@ namespace PracticeWebApp.Models
                     j.ToTable("OrderProduct");
                 }
             );
-            
-            //modelBuilder.Entity<Order>(entity =>
+
+            //modelBuilder
+            //    .Entity<Comment>()
+            //    .HasMany(c => c.Replies)
+            //    .WithMany(s => s.Comments)
+            //    .UsingEntity<CommentReply>(
+            //       j => j
+            //        .HasOne(pt => pt.Reply)
+            //        .WithMany(t => t.CommentReplies)
+            //        .HasForeignKey(pt => pt.ReplyId),
+            //    j => j
+            //        .HasOne(pt => pt.Comment)
+            //        .WithMany(p => p.CommentReplies)
+            //        .HasForeignKey(pt => pt.CommentId),
+            //    j =>
+            //    {
+            //        j.HasKey(t => new { t.ReplyId, t.CommentId });
+            //        j.ToTable("CommentReply");
+            //    }
+            //);
+            //modelBuilder.Entity<Reply>(entity =>
+            //{
+            //    entity.HasOne(d => d.User)
+            //        .WithMany(p => p.Replies)
+            //        .HasForeignKey(d => d.UserId);
+
+            //    entity.HasOne(d => d.Comment)
+            //        .WithMany(p => p.Replies)
+            //        .HasForeignKey(d => d.CommentId);
+            //});
+            //modelBuilder.Entity<User>(entity =>
             //{
             //    entity.HasOne(d => d.Status)
             //        .WithMany(p => p.Orders)
             //        .HasForeignKey(d => d.StatusId)
             //        .OnDelete(DeleteBehavior.ClientSetNull);
-            //        //.HasConstraintName("Appointment_AppointmentStatus_FK");
+            //    //.HasConstraintName("Appointment_AppointmentStatus_FK");
             //});
+            //modelBuilder.Entity<AppointmentService>(entity =>
+            //{
+            //    entity.HasOne(d => d.Appointment)
+            //        .WithMany(p => p.AppointmentServices)
+            //        .HasForeignKey(d => d.AppointmentId)
+            //        .OnDelete(DeleteBehavior.ClientSetNull)
+            //        .HasConstraintName("AppointmentService_Appointment_FK");
+
+            //    entity.HasOne(d => d.Service)
+            //        .WithMany(p => p.AppointmentServices)
+            //        .HasForeignKey(d => d.ServiceId)
+            //        .OnDelete(DeleteBehavior.ClientSetNull)
+            //        .HasConstraintName("AppointmentService_Service_FK");
+            //}
 
             modelBuilder.Entity<UserRole>().HasData(
             new UserRole[]
@@ -142,6 +187,12 @@ namespace PracticeWebApp.Models
                 new PostService{ Id=1,Name="Нова пошта"},
             });
 
+            modelBuilder.Entity<Comment>().HasData(
+            new Comment[]
+            {
+                new Comment{ Id=1,Text="Комент комент комент комент", ProductId = 1, UserId = 1},
+                new Comment{ Id=2,Text="Комент2 комент2 комент2 комент2", ProductId = 1, UserId = 2},
+            });
             //modelBuilder.Entity<Order>().HasData(
             //new Order[]
             //{

@@ -35,6 +35,8 @@ namespace PracticeWebApp.Models
 
         public List<Order> Orders { get; set; } = new List<Order>();
         public List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
+
+        public virtual ICollection<Comment> Comments { get; set; }
         //public virtual ICollection<AppointmentService> AppointmentServices { get; set; }
     }
 }
