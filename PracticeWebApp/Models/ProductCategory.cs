@@ -10,13 +10,14 @@ namespace PracticeWebApp.Models
     {
         public ProductCategory()
         {
-            Product = new HashSet<Product>();
+            ProductSubcategories = new HashSet<ProductSubcategory>();
         }
 
         public int Id { get; set; }
         [DisplayName("Категорія")]
         public string Name { get; set; }
 
-        public virtual ICollection<Product> Product { get; set; }
+        //public virtual ICollection<Product> Product { get; set; }
+        public virtual ICollection<ProductSubcategory> ProductSubcategories { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace PracticeWebApp.Models
     {
         public ProductSubcategory()
         {
-            Product = new HashSet<Product>();
+            SubcategoryCategories = new HashSet<SubcategoryCategory>();
         }
 
         public int Id { get; set; }
@@ -21,6 +21,6 @@ namespace PracticeWebApp.Models
         public int CategoryId { get; set; }
         [DisplayName("Категорія товару")]
         public virtual ProductCategory Category { get; set; }
-        public virtual ICollection<Product> Product { get; set; }
+        public virtual ICollection<SubcategoryCategory> SubcategoryCategories { get; set; }
     }
 }

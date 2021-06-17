@@ -13,8 +13,7 @@ namespace PracticeWebApp.Models
             //AppointmentServices = new HashSet<AppointmentService>();
         }
 
-        public int Id { get; set; }
-        
+        public int Id { get; set; }      
         public byte[] Image { get; set; }
         [DisplayName("Ціна")]
         public decimal Price { get; set; }
@@ -22,13 +21,14 @@ namespace PracticeWebApp.Models
         public string Name { get; set; }
         [DisplayName("Опис")]
         public string Description { get; set; }
-        
-        [DisplayName("Підкатегорія товару")]
-        public int ProductSubcategoryId { get; set; }
 
+        //[DisplayName("Підкатегорія товару")]
+        //public int ProductSubcategoryId { get; set; }
+        [DisplayName("Підкатегорія товару")]
+        public int SubcategoryCategoryId { get; set; }
         
         [DisplayName("Підкатегорія товару")]
-        public virtual ProductSubcategory ProductSubcategory { get; set; }
+        public virtual SubcategoryCategory SubcategoryCategory { get; set; }
 
         public List<User> Users { get; set; } = new List<User>();
         public List<CartProduct> CartProducts { get; set; } = new List<CartProduct>();

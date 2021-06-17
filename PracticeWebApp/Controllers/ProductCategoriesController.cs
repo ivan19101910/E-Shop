@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: ProductCategories/Details/5
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,6 +45,7 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: ProductCategories/Create
+        [Authorize(Roles = "Адміністратор")]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +56,7 @@ namespace PracticeWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Create([Bind("Id,Name")] ProductCategory productCategory)
         {
             if (ModelState.IsValid)
@@ -65,6 +69,7 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: ProductCategories/Edit/5
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,6 +90,7 @@ namespace PracticeWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] ProductCategory productCategory)
         {
             if (id != productCategory.Id)
@@ -116,6 +122,7 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: ProductCategories/Delete/5
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,6 +143,7 @@ namespace PracticeWebApp.Controllers
         // POST: ProductCategories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var productCategory = await _context.ProductCategories.FindAsync(id);

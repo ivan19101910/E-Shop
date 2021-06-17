@@ -1,0 +1,37 @@
+﻿@model IEnumerable<PracticeWebApp.Models.SubcategoryCategory>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Підкатегорії</h1>
+
+<p>
+    <a asp-action="Create">Створити нову категорію в підкатегорії</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Index" asp-controller="Products" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+            </td>
+            <td>
+                @if (User.IsInRole("Адміністратор"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> 
+                    <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

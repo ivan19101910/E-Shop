@@ -1,12 +1,12 @@
-﻿@model PracticeWebApp.Models.ProductCategory
+﻿@model PracticeWebApp.Models.SubcategoryCategory
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Створення категорії продукту</h1>
+<h1>Створення категорії товару в підкатегорії</h1>
 
-@*<h4>ProductCategory</h4>*@
+@*<h4>SubcategoryCategory</h4>*@
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -18,14 +18,18 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="ProductSubcategoryId" class="control-label"></label>
+                <select asp-for="ProductSubcategoryId" class ="form-control" asp-items="ViewBag.ProductSubcategoryId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Створити" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Повернутися до списку категорій</a>
+    <a asp-action="Index">Повернутися до списку ктаегорій в підкатегорії</a>
 </div>
 
 @section Scripts {

@@ -24,10 +24,10 @@ namespace PracticeWebApp.Controllers
         // GET: Products
         public async Task<IActionResult> Index(int? id)
         {
-            var products = _context.Products.Include(p => p.ProductSubcategory).Select(x => x);
+            var products = _context.Products.Include(p => p.SubcategoryCategory).Select(x => x);
             if (id.HasValue)
             {
-                products = products.Where(x => x.ProductSubcategoryId == id);
+                products = products.Where(x => x.SubcategoryCategoryId == id);
             }
             //var appDbContext = _context.Products.Include(p => p.ProductSubcategory);
             return View(await products.ToListAsync());
@@ -42,7 +42,7 @@ namespace PracticeWebApp.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.ProductSubcategory)
+                .Include(p => p.SubcategoryCategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
@@ -62,7 +62,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public IActionResult Create()
         {
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.ProductSubcategory, "Id", "Id");
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Id");
             return View();
         }
 
@@ -88,7 +88,7 @@ namespace PracticeWebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.ProductSubcategory, "Id", "Id", product.ProductSubcategoryId);
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Id", product.SubcategoryCategoryId);
             return View(product);
         }
 
@@ -106,7 +106,7 @@ namespace PracticeWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.ProductSubcategory, "Id", "Id", product.ProductSubcategoryId);
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Id", product.SubcategoryCategoryId);
             return View(product);
         }
 
@@ -143,7 +143,7 @@ namespace PracticeWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.ProductSubcategory, "Id", "Id", product.ProductSubcategoryId);
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Id", product.SubcategoryCategoryId);
             return View(product);
         }
 
@@ -157,7 +157,7 @@ namespace PracticeWebApp.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.ProductSubcategory)
+                .Include(p => p.SubcategoryCategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {

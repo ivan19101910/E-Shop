@@ -26,14 +26,14 @@
                 <tr>
                     <td>
                         @*@Html.DisplayFor(modelItem => item.Name)*@
-                        <a asp-action="Index" asp-controller="Products" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                        <a asp-action="Index" asp-controller="SubcategoryCategories" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
                     </td>
                     <td>
                         @if (User.IsInRole("Адміністратор"))
                         {
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a>
+                            @*<a asp-action="Details" asp-route-id="@item.Id">Details</a>*@
+                            <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
                         }
                     </td>
                 </tr>

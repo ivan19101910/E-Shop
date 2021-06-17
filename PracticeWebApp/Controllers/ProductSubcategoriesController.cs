@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ namespace PracticeWebApp.Controllers
         // GET: ProductSubcategories
         public async Task<IActionResult> Index(int? id)
         {
-            var subcategories = _context.ProductSubcategory.Include(p => p.Category).Select(x=>x);
+            var subcategories = _context.SubcategoryCategories.Include(p => p.Category).Select(x=>x);
             if (id.HasValue)
             {
                 subcategories = subcategories.Where(x => x.CategoryId == id);
@@ -34,6 +35,7 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: ProductSubcategories/Details/5
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -41,7 +43,7 @@ namespace PracticeWebApp.Controllers
                 return NotFound();
             }
 
-            var productSubcategory = await _context.ProductSubcategory
+            var productSubcategory = await _context.SubcategoryCategories
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (productSubcategory == null)
@@ -53,6 +55,7 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: ProductSubcategories/Create
+        [Authorize(Roles = "Адміністратор")]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "Id");
@@ -64,6 +67,7 @@ namespace PracticeWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Create([Bind("Id,Name,CategoryId")] ProductSubcategory productSubcategory)
         {
             if (ModelState.IsValid)
@@ -77,6 +81,7 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: ProductSubcategories/Edit/5
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,7 +89,7 @@ namespace PracticeWebApp.Controllers
                 return NotFound();
             }
 
-            var productSubcategory = await _context.ProductSubcategory.FindAsync(id);
+            var productSubcategory = await _context.SubcategoryCategories.FindAsync(id);
             if (productSubcategory == null)
             {
                 return NotFound();
@@ -98,6 +103,7 @@ namespace PracticeWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CategoryId")] ProductSubcategory productSubcategory)
         {
             if (id != productSubcategory.Id)
@@ -130,6 +136,7 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: ProductSubcategories/Delete/5
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,7 +144,7 @@ namespace PracticeWebApp.Controllers
                 return NotFound();
             }
 
-            var productSubcategory = await _context.ProductSubcategory
+            var productSubcategory = await _context.SubcategoryCategories
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (productSubcategory == null)
@@ -151,17 +158,18 @@ namespace PracticeWebApp.Controllers
         // POST: ProductSubcategories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productSubcategory = await _context.ProductSubcategory.FindAsync(id);
-            _context.ProductSubcategory.Remove(productSubcategory);
+            var productSubcategory = await _context.SubcategoryCategories.FindAsync(id);
+            _context.SubcategoryCategories.Remove(productSubcategory);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductSubcategoryExists(int id)
         {
-            return _context.ProductSubcategory.Any(e => e.Id == id);
+            return _context.SubcategoryCategories.Any(e => e.Id == id);
         }
     }
 }
