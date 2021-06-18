@@ -27,16 +27,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ProductCategories" asp-action="Index">Товари</a>
                         </li>
-                        @if (User.IsInRole("Адміністратор"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="IndexAll">Замовлення</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Користувачі</a>
-                            </li>
-
-                        }
                     </ul>
 
                 </div>
@@ -47,8 +37,14 @@
                         <a href="/Account/Logout">
                             Вийти
                         </a>
-                        <a asp-action="Index" asp-controller="CartProducts">Корзина</a>
+                        <a asp-action="Index" asp-controller="CartProducts">Кошик</a>
                         <a asp-action="Index" asp-controller="Orders">Мої замовлення</a>
+                    }
+                    else
+                    {
+                        <a href="/Account/Login">
+                            Увійти
+                        </a>
                     }
                 </div>
             </div>

@@ -8,11 +8,14 @@ namespace PracticeWebApp.Models
 {
     public class Comment
     {
-        public int Id { get; set; }      
+        public int Id { get; set; }
+        [DisplayName("Текст коментаря")]
         public string Text { get; set; }
         public int ProductId { get; set; }
         public int UserId { get; set; }
         public int? RepliedCommentId { get; set; }
+        [DisplayName("Дата та час створення")]
+        public DateTime CreatedDateTime { get; set; }
         public virtual User User { get; set; }
         public virtual Product Product { get; set; }
         public virtual Comment RepliedComment { get; set; }

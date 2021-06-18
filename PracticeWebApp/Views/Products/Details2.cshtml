@@ -1,0 +1,109 @@
+﻿@model PracticeWebApp.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1></h1>
+
+<div>
+    <h4></h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @*@Html.DisplayNameFor(model => model.Image)*@
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw("<img style='width:160px; height:120px;' src=\"data:image/jpeg;base64,"
+                                    + Convert.ToBase64String(Model.Image) + "\" />")
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        @*<dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.ProductSubcategory)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.ProductSubcategory.Id)
+            </dd>*@
+    </dl>
+</div>
+<div>
+    @if (User.IsInRole("Адміністратор"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a>
+    }
+    <a asp-action="Index" asp-route-id="@Model.SubcategoryCategoryId">До списку товарів</a>
+</div>
+
+<p>
+    <a asp-action="Create" asp-controller="Comments" asp-route-id="@Model.Id">Додати коментар</a>
+</p>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Користувач
+            </th>
+            <th>
+                Коментар
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Comment comment in ViewBag.Comments)
+        {
+            if (!comment.RepliedCommentId.HasValue)
+            {
+                <tr>
+                    <td>
+                        @comment.User.Email
+                    </td>
+                    <td>
+                        @comment.Text
+                    </td>
+                    <td>
+                        <a asp-action="CreateReply" asp-controller="Comments" asp-route-id="@comment.Id">Відповісти</a>
+                    </td>
+                </tr>
+            }
+
+
+
+            @foreach (Comment reply in comment.RepliedComments)
+            {
+                <tr>
+                    <td>
+                        @reply.User.Email replied
+                    </td>
+                    <td>
+                        @reply.Text replied
+                    </td>
+                    <td>
+                        <a asp-action="CreateReply" asp-controller="Comments" asp-route-id="@reply.Id">Відповісти</a>
+                    </td>
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>
+

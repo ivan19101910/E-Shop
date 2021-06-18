@@ -32,7 +32,7 @@ namespace PracticeWebApp.Controllers
             var appDbContext = _context.Orders.Include(o => o.Status).Include(o => o.User);
             return View(await appDbContext.ToListAsync());
         }
-        [Authorize(Roles = "Адміністратор")]
+
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -75,8 +75,9 @@ namespace PracticeWebApp.Controllers
             decimal sum = 0;
             foreach(var cartProduct in cartProducts)
             {
-                sum += cartProduct.Product.Price;
+                sum += cartProduct.Product.Price * cartProduct.Amount;
             }
+           
             //ViewData["Products"] = new SelectList(_context.Products.Where();
             ViewData["Total"] = sum;
             ViewData["PostServiceId"] = new SelectList(_context.PostServices, "Id", "Name");
@@ -149,7 +150,7 @@ namespace PracticeWebApp.Controllers
             if (ModelState.IsValid)
             {
                 order.UserId = user.Id;
-                order.Total = 1234;
+                //order.Total = 1234;
                 order.Description = "Desc";
                 order.StatusId = 1;
                 order.CreatedDateTime = DateTime.UtcNow;

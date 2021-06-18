@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -26,8 +27,8 @@ namespace PracticeWebApp.Controllers
             var appDbContext = _context.CartProducts.Include(c => c.Product).Include(c => c.User).Where(x=>x.UserId == user.Id);
             return View(await appDbContext.ToListAsync());
         }
-        
-        
+
+        [Authorize]
         public async Task<IActionResult> Buy(int? id)
         {
             //var username = User.Identity.Name;

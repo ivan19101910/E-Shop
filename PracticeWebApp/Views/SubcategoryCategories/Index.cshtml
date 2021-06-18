@@ -5,10 +5,13 @@
 }
 
 <h1>Підкатегорії</h1>
+@if (User.IsInRole("Адміністратор"))
+{
+    <p>
+        <a asp-action="Create">Створити нову категорію в підкатегорії</a>
+    </p>
+}
 
-<p>
-    <a asp-action="Create">Створити нову категорію в підкатегорії</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -19,19 +22,20 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Index" asp-controller="Products" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
-            </td>
-            <td>
-                @if (User.IsInRole("Адміністратор"))
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> 
-                    <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
-                }
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Index" asp-controller="Products" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                </td>
+                <td>
+                    @if (User.IsInRole("Адміністратор"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

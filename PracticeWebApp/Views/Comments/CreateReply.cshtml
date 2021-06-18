@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Залишити відгук</h1>
+<h1>Відповідь на коментар</h1>
 
 @*<h4>Comment</h4>*@
 <hr />
@@ -18,14 +18,14 @@
                 <span asp-validation-for="Text" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Створити" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Details" asp-controller="Products" asp-route-id="@ViewBag.ProdId">Повернутися до товару</a>
 </div>
 
 @section Scripts {

@@ -13,7 +13,8 @@ namespace PracticeWebApp.Models
             //AppointmentServices = new HashSet<AppointmentService>();
         }
 
-        public int Id { get; set; }      
+        public int Id { get; set; }
+        [DisplayName("Зображення")]
         public byte[] Image { get; set; }
         [DisplayName("Ціна")]
         public decimal Price { get; set; }

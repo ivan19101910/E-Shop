@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -46,17 +47,21 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: Comments/Create
-        public IActionResult Create()
+        [Authorize]
+        public IActionResult Create(int? id)
         {
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email");
+            ViewData["ProdId"] = id;
             return View();
         }
-        public IActionResult CreateReply()
+        [Authorize]
+        public IActionResult CreateReply(int? id)
         {
             //ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email");
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
+            ViewData["ProdId"] = _context.Comments.Where(x=>x.Id == id).FirstOrDefault().ProductId;
             return View();
         }
         // POST: Comments/Create
@@ -64,6 +69,7 @@ namespace PracticeWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Text")] Comment comment, int id)
         {
             var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
@@ -71,29 +77,36 @@ namespace PracticeWebApp.Controllers
             {
                 comment.UserId = user.Id;
                 comment.ProductId = id;
+                comment.CreatedDateTime = DateTime.UtcNow;
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return Redirect($"~/Products/Details/{id}");
             }
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", comment.ProductId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", comment.UserId);
             return View(comment);
+            //return View();
+            //return Redirect($"~/Products/Details/{id}");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateReply([Bind("Text")] Comment comment, int id)
+        public async Task<IActionResult> CreateReply([Bind("Text")] Comment comment, int id)//trouble here?
         {
             var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
-            var repliedComment = _context.Products.Where(x=>x.Id == id).FirstOrDefault();
+            //var repliedComment = _context.Products.Where(x=>x.Id == id).FirstOrDefault();
+            var repliedComment = _context.Comments.Where(x => x.Id == id).FirstOrDefault();
             if (ModelState.IsValid)
             {               
                 comment.UserId = user.Id;
                 comment.RepliedCommentId = id;
                 comment.ProductId = id;
+                comment.CreatedDateTime = DateTime.UtcNow;
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return Redirect($"~/Products/Details/{repliedComment.ProductId}");
             }
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", comment.ProductId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", comment.UserId);
@@ -115,6 +128,7 @@ namespace PracticeWebApp.Controllers
             }
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", comment.ProductId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", comment.UserId);
+            ViewData["ProdId"] = comment.ProductId;
             return View(comment);
         }
 
@@ -123,7 +137,7 @@ namespace PracticeWebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Text,ProductId,UserId")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Text,ProductId,UserId, CreatedDateTime, RepliedCommentId")] Comment comment)
         {
             if (id != comment.Id)
             {
@@ -152,6 +166,7 @@ namespace PracticeWebApp.Controllers
             }
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", comment.ProductId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", comment.UserId);
+            ViewData["ProdId"] = comment.ProductId;
             return View(comment);
         }
 
@@ -167,6 +182,7 @@ namespace PracticeWebApp.Controllers
                 .Include(c => c.Product)
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            ViewData["ProdId"] = comment.ProductId;
             if (comment == null)
             {
                 return NotFound();

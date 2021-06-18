@@ -101,6 +101,15 @@
     </table>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати</a> |
-    <a asp-action="IndexAll">Повернутися до списку замовлень</a>
+    
+    @if (User.IsInRole("Адміністратор"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Редагувати|</a>
+        <a asp-action="IndexAll">Повернутися до списку замовлень</a>
+    }
+    else
+    {
+        <a asp-action="Index">Повернутися до списку замовлень</a>
+    }
+
 </div>

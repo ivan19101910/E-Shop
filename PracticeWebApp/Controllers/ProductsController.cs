@@ -51,6 +51,7 @@ namespace PracticeWebApp.Controllers
             ViewData["Comments"] =//HERE PROBLEM
                 new List<Comment>(_context.Comments
                 .Include(x => x.User)
+                .ThenInclude(x=>x.UserRole)
                 .Include(x => x.Product)
                 .Include(x => x.RepliedComments)
                 .ThenInclude(x=>x.RepliedComment)
@@ -62,7 +63,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public IActionResult Create()
         {
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Id");
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Name");
             return View();
         }
 
@@ -77,18 +78,16 @@ namespace PracticeWebApp.Controllers
             if (ModelState.IsValid)
             {
                 byte[] imageData = null;
-                // считываем переданный файл в массив байтов
                 using (var binaryReader = new BinaryReader(uploadImage.OpenReadStream()))
                 {
                     imageData = binaryReader.ReadBytes((int)uploadImage.Length);
                 }
-                // установка массива байтов
                 product.Image = imageData;
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Id", product.SubcategoryCategoryId);
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Name", product.SubcategoryCategoryId);
             return View(product);
         }
 
@@ -106,7 +105,7 @@ namespace PracticeWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Id", product.SubcategoryCategoryId);
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Name", product.SubcategoryCategoryId);
             return View(product);
         }
 
@@ -116,7 +115,7 @@ namespace PracticeWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Адміністратор")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Image,Price,Name,Description,ProductSubcategoryId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Image,Price,Name,Description,SubcategoryCategoryId")] Product product, IFormFile uploadImage)
         {
             if (id != product.Id)
             {
@@ -127,6 +126,13 @@ namespace PracticeWebApp.Controllers
             {
                 try
                 {
+                    byte[] imageData = null;
+                    using (var binaryReader = new BinaryReader(uploadImage.OpenReadStream()))
+                    {
+                        imageData = binaryReader.ReadBytes((int)uploadImage.Length);
+                    }
+                    product.Image = imageData;
+
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
@@ -143,7 +149,7 @@ namespace PracticeWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Id", product.SubcategoryCategoryId);
+            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Name", product.SubcategoryCategoryId);
             return View(product);
         }
 

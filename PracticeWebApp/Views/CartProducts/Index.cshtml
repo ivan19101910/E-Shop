@@ -4,22 +4,25 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Кошик</h1>
 <a asp-action="Create" asp-controller="Orders" class="btn btn-outline-success">Оформити замовлення</a>
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
+</p>*@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Amount)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product)
             </th>
             <th></th>
         </tr>
@@ -28,20 +31,24 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.Raw("<img style='width:160px; height:160px;' src=\"data:image/jpeg;base64,"
+                                         + Convert.ToBase64String(item.Product.Image) + "\" />")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Amount)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.User.Email)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Product.Id)
-            </td>
-            <td>
                 @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                 @*<a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-        <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |*@
+            <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |*@
                 <a asp-action="Buy" asp-route-id="@item.ProductId">+</a>
                 <a asp-action="DeleteFromCart" asp-route-id="@item.ProductId">-</a>
             </td>

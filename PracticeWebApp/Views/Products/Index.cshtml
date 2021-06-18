@@ -19,7 +19,7 @@
                 <div class="product-wrap">
                     <div class="product-item">
                         @*<img src="https://html5book.ru/wp-content/uploads/2015/10/black-dress.jpg">*@
-                        @Html.Raw("<img style='width:270px; height:270px;' src=\"data:image/jpeg;base64,"
+                        @Html.Raw("<img style='width:280px; height:280px;' src=\"data:image/jpeg;base64,"
                                          + Convert.ToBase64String(item.Image) + "\" />")
                         <div class="product-buttons">
                             <a class="button" asp-action="Buy" asp-controller="CartProducts" asp-route-id="@item.Id">В корзину</a>
@@ -29,10 +29,16 @@
                     <div class="product-title">
                         <a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Name) </a>
                         @*<a href="">@Html.DisplayFor(modelItem => item.Name)</a>*@
-                    <span class="product-price">
-                        @Html.DisplayFor(modelItem => item.Price) ₴
-                    </span>
+                        <span class="product-price">
+                            @Html.DisplayFor(modelItem => item.Price) ₴
+                        </span>
+
                     </div>
+                    @if (User.IsInRole("Адміністратор"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Редагувати|</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
+                    }
                 </div>
             </div>
         }
