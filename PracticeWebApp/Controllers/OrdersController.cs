@@ -59,17 +59,9 @@ namespace PracticeWebApp.Controllers
             return View(order);
         }
 
-        // GET: Orders/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["StatusId"] = new SelectList(_context.OrderStatuses, "Id", "Id");
-        //    ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email");
-        //    return View();
-        //}
         [Authorize(Roles = "Адміністратор, Покупець")]
         public IActionResult Create()
         {
-            //var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
             var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
             var cartProducts = _context.CartProducts.Where(x => x.UserId == user.Id).Include(x=>x.Product);
             decimal sum = 0;
@@ -78,68 +70,12 @@ namespace PracticeWebApp.Controllers
                 sum += cartProduct.Product.Price * cartProduct.Amount;
             }
            
-            //ViewData["Products"] = new SelectList(_context.Products.Where();
             ViewData["Total"] = sum;
             ViewData["PostServiceId"] = new SelectList(_context.PostServices, "Id", "Name");
-            //ViewData["StatusId"] = new SelectList(_context.OrderStatuses, "Id", "Id");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email");
             return View();
         }
 
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Адміністратор")]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var order = await _context.Orders.FindAsync(id);
-        //    _context.Orders.Remove(order);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-        // POST: Orders/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,UserId,Total,Description,StatusId")] Order order)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(order);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["StatusId"] = new SelectList(_context.OrderStatuses, "Id", "Id", order.StatusId);
-        //    ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", order.UserId);
-        //    return View(order);
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,UserId,Total,Description,StatusId")] Order order)
-        //{
-        //    var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
-        //    var cartProducts = _context.CartProducts.Where(x => x.UserId == user.Id);
-        //    if (ModelState.IsValid)
-        //    {
-        //        order.UserId = user.Id;
-        //        order.Total = 1234;
-        //        order.Description = "Desc";
-        //        order.StatusId = 1;
-
-        //        _context.Add(order);
-        //        await _context.SaveChangesAsync();
-        //        foreach (var cartProduct in cartProducts)
-        //        {
-        //            _context.Add(new OrderProduct { OrderId = order.Id, ProductId = cartProduct.ProductId, Amount = cartProduct.Amount });
-        //        }
-
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["StatusId"] = new SelectList(_context.OrderStatuses, "Id", "Id", order.StatusId);
-        //    ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", order.UserId);
-        //    return View(order);
-        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Адміністратор, Покупець")]
@@ -168,13 +104,11 @@ namespace PracticeWebApp.Controllers
                     _context.CartProducts.Remove(el);
                 }
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
                 return Redirect("~/Home/Index");
             }
             
             ViewData["StatusId"] = new SelectList(_context.OrderStatuses, "Id", "Id", order.StatusId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", order.UserId);
-            //return View(order);
             return View();
         }
         // GET: Orders/Edit/5
@@ -197,8 +131,6 @@ namespace PracticeWebApp.Controllers
         }
 
         // POST: Orders/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Адміністратор")]

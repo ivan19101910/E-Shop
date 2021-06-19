@@ -58,15 +58,12 @@ namespace PracticeWebApp.Controllers
         [Authorize]
         public IActionResult CreateReply(int? id)
         {
-            //ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email");
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
             ViewData["ProdId"] = _context.Comments.Where(x=>x.Id == id).FirstOrDefault().ProductId;
             return View();
         }
         // POST: Comments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -80,22 +77,18 @@ namespace PracticeWebApp.Controllers
                 comment.CreatedDateTime = DateTime.UtcNow;
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
                 return Redirect($"~/Products/Details/{id}");
             }
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", comment.ProductId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", comment.UserId);
             return View(comment);
-            //return View();
-            //return Redirect($"~/Products/Details/{id}");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateReply([Bind("Text")] Comment comment, int id)//trouble here?
+        public async Task<IActionResult> CreateReply([Bind("Text")] Comment comment, int id)
         {
             var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
-            //var repliedComment = _context.Products.Where(x=>x.Id == id).FirstOrDefault();
             var repliedComment = _context.Comments.Where(x => x.Id == id).FirstOrDefault();
             if (ModelState.IsValid)
             {               
@@ -105,7 +98,6 @@ namespace PracticeWebApp.Controllers
                 comment.CreatedDateTime = DateTime.UtcNow;
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
                 return Redirect($"~/Products/Details/{repliedComment.ProductId}");
             }
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", comment.ProductId);
@@ -133,8 +125,6 @@ namespace PracticeWebApp.Controllers
         }
 
         // POST: Comments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Text,ProductId,UserId, CreatedDateTime, RepliedCommentId")] Comment comment)

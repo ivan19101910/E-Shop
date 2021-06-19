@@ -23,12 +23,10 @@
                                          + Convert.ToBase64String(item.Image) + "\" />")
                         <div class="product-buttons">
                             <a class="button" asp-action="Buy" asp-controller="CartProducts" asp-route-id="@item.Id">В корзину</a>
-                            @*<a href="" class="button">В корзину</a>*@
                         </div>
                     </div>
                     <div class="product-title">
                         <a asp-action="Details" asp-route-id="@item.Id"> @Html.DisplayFor(modelItem => item.Name) </a>
-                        @*<a href="">@Html.DisplayFor(modelItem => item.Name)</a>*@
                         <span class="product-price">
                             @Html.DisplayFor(modelItem => item.Price) ₴
                         </span>

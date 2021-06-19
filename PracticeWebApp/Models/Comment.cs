@@ -20,6 +20,5 @@ namespace PracticeWebApp.Models
         public virtual Product Product { get; set; }
         public virtual Comment RepliedComment { get; set; }
         public virtual ICollection<Comment> RepliedComments { get; set; }
-
     }
 }

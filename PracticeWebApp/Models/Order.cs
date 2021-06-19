@@ -11,8 +11,6 @@ namespace PracticeWebApp.Models
     {
         [DisplayName("Номер замовлення")]
         public int Id { get; set; }
-        //[HiddenInput]
-        //[ReadOnly(true)]
         [DisplayName("Користувач")]
         public int UserId { get; set; }
         [DisplayName("Сума замовлення")]
@@ -34,9 +32,7 @@ namespace PracticeWebApp.Models
         [DisplayName("Статус")]
         public virtual OrderStatus Status { get; set; }
         [DisplayName("Спосіб доставки")]
-
         public virtual PostService PostService { get; set; }
-
         public List<Product> Products { get; set; } = new List<Product>();
         public List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     }

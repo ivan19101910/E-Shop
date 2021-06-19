@@ -11,7 +11,6 @@ namespace PracticeWebApp.Models
         public int Id { get; set; }
         [DisplayName("Назва")]
         public string Name { get; set; }
-
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

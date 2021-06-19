@@ -12,11 +12,9 @@ namespace PracticeWebApp.Models
         {
             SubcategoryCategories = new HashSet<SubcategoryCategory>();
         }
-
         public int Id { get; set; }
         [DisplayName("Підкатегорія")]
         public string Name { get; set; }
-
         [DisplayName("Категорія товару")]
         public int CategoryId { get; set; }
         [DisplayName("Категорія товару")]

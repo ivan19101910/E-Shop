@@ -9,13 +9,7 @@ namespace PracticeWebApp.Models
 {
     public class User
     {
-
-        public User()
-        {
-            //Appointments = new HashSet<Appointment>();
-        }
         public int Id { get; set; }
-
         [DisplayName("Ім'я")]
         public string FirstName { get; set; }
         [DisplayName("Прізвище")]
@@ -40,10 +34,7 @@ namespace PracticeWebApp.Models
         public virtual UserRole UserRole{ get; set; }
         public List<Product> Products { get; set; } = new List<Product>();
         public List<CartProduct> CartProduct { get; set; } = new List<CartProduct>();
-
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
-
         public virtual ICollection<Comment> Comments { get; set; }
-        //public List<OrderProduct> OrderProduct { get; set; } = new List<OrderProduct>();
     }
 }
