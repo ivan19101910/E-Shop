@@ -26,38 +26,42 @@
                         }
 
 
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ProductCategories" asp-action="Index">Товари</a>
-                        </li>
+                        </li>*@
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" asp-controller="ProductCategories" asp-action="IndexPopup" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" asp-controller="ProductCategories" asp-action="Index" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Товари
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">                                
-                                @foreach (ProductCategory category in ViewBag.AllCategories)
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                @if (ViewBag.Query != null)
                                 {
-                                    @*<li><a class="dropdown-item" href="#">@category.Name</a></li>*@
-                                    <li class="dropdown-submenu">
-                                        <a class="dropdown-item dropdown-toggle" href="#">@category.Name</a>
-                                        <ul class="dropdown-menu">
-                                            @foreach (ProductSubcategory subcat in category.ProductSubcategories)
-                                            {
-                                                @*<li><a class="dropdown-item" href="#">@subcat.Name</a></li>*@
-                                                <li class="dropdown-submenu">
-                                                    <a class="dropdown-item dropdown-toggle" href="#">@subcat.Name</a>
-                                                    <ul class="dropdown-menu">
-                                                        @foreach (SubcategoryCategory x in subcat.SubcategoryCategories)
-                                                        {
-                                                        <li><a class="dropdown-item" asp-action="Index" asp-controller="Products" asp-route-id="@x.Id">@x.Name</a></li>
-                                                        }
-                                                        
-                                                    </ul>
-                                                </li>
-                                            }
-                                        </ul>
-                                    </li>
+                                    @foreach (ProductCategory category in ViewBag.AllCategories)
+                                    {
+                                        @*<li><a class="dropdown-item" href="#">@category.Name</a></li>*@
+                                        <li class="dropdown-submenu">
+                                            <a class="dropdown-item dropdown-toggle" href="#">@category.Name</a>
+                                            <ul class="dropdown-menu">
+                                                @foreach (ProductSubcategory subcat in category.ProductSubcategories)
+                                                {
+                                                    @*<li><a class="dropdown-item" href="#">@subcat.Name</a></li>*@
+                                                    <li class="dropdown-submenu">
+                                                        <a class="dropdown-item dropdown-toggle" href="#">@subcat.Name</a>
+                                                        <ul class="dropdown-menu">
+                                                            @foreach (SubcategoryCategory x in subcat.SubcategoryCategories)
+                                                            {
+                                                                <li><a class="dropdown-item" asp-action="Index" asp-controller="Products" asp-route-id="@x.Id">@x.Name</a></li>
+                                                            }
+
+                                                        </ul>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
                                 }
+
                             </ul>
                         </li>
                     </ul>

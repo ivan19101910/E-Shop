@@ -155,7 +155,8 @@ namespace PracticeWebApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return Redirect($"~/Products/Details/{comment.ProductId}");
             }
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", comment.ProductId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", comment.UserId);

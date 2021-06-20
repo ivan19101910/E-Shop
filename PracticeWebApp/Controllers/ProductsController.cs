@@ -64,7 +64,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public IActionResult Create()
         {
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Name");
+            ViewData["SubcategoryCategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Name");
             ViewData["AllCategories"] = _context.GetAllCategories();
             return View();
         }
@@ -75,7 +75,7 @@ namespace PracticeWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Адміністратор")]
-        public async Task<IActionResult> Create([Bind("Id,Image,Price,Name,Description,ProductSubcategoryId")] Product product, IFormFile uploadImage)
+        public async Task<IActionResult> Create([Bind("Id,Image,Price,Name,Description,SubcategoryCategoryId")] Product product, IFormFile uploadImage)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace PracticeWebApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Name", product.SubcategoryCategoryId);
+            ViewData["SubcategoryCategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Name", product.SubcategoryCategoryId);
             return View(product);
         }
 
@@ -121,6 +121,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Image,Price,Name,Description,SubcategoryCategoryId")] Product product, IFormFile uploadImage)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id != product.Id)
             {
                 return NotFound();
