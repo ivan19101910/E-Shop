@@ -29,7 +29,7 @@ namespace PracticeWebApp.Controllers
             {
                 products = products.Where(x => x.SubcategoryCategoryId == id);
             }
-            //var appDbContext = _context.Products.Include(p => p.ProductSubcategory);
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View(await products.ToListAsync());
         }
 
@@ -48,7 +48,7 @@ namespace PracticeWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["Comments"] =//HERE PROBLEM
+            ViewData["Comments"] =
                 new List<Comment>(_context.Comments
                 .Include(x => x.User)
                 .ThenInclude(x=>x.UserRole)
@@ -56,6 +56,7 @@ namespace PracticeWebApp.Controllers
                 .Include(x => x.RepliedComments)
                 .ThenInclude(x=>x.RepliedComment)
                 .Where(x => x.Product.Id == id));
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View(product);
         }
 
@@ -64,6 +65,7 @@ namespace PracticeWebApp.Controllers
         public IActionResult Create()
         {
             ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Name");
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View();
         }
 
@@ -105,7 +107,9 @@ namespace PracticeWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductSubcategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Name", product.SubcategoryCategoryId);
+            ViewData["AllCategories"] = _context.GetAllCategories();
+            ViewData["SubcategoryCategoryId"] = new SelectList(_context.SubcategoryCategories, "Id", "Name", product.SubcategoryCategoryId);
+            //ViewData["Test"] = new SelectList(_context.Sub)
             return View(product);
         }
 
@@ -169,7 +173,7 @@ namespace PracticeWebApp.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View(product);
         }
 

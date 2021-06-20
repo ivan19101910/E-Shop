@@ -23,6 +23,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Index()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             var appDbContext = _context.Users.Include(u => u.UserRole);
             return View(await appDbContext.ToListAsync());
         }
@@ -31,6 +32,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Details(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
@@ -51,6 +53,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public IActionResult Create()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             ViewData["UserRoleId"] = new SelectList(_context.UserRoles, "Id", "Id");
             return View();
         }
@@ -77,6 +80,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
@@ -133,6 +137,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();

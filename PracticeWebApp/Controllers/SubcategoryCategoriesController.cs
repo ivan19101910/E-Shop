@@ -21,7 +21,8 @@ namespace PracticeWebApp.Controllers
         // GET: SubcategoryCategories
         public async Task<IActionResult> Index(int ?id)
         {
-            var appDbContext = _context.SubcategoryCategory.Include(s => s.ProductSubcategory).Select(x => x);
+            ViewData["AllCategories"] = _context.GetAllCategories();
+            var appDbContext = _context.SubcategoryCategories.Include(s => s.ProductSubcategory).Select(x => x);
             if (id.HasValue)
             {
                 appDbContext = appDbContext.Where(x => x.ProductSubcategoryId == id);
@@ -37,7 +38,7 @@ namespace PracticeWebApp.Controllers
                 return NotFound();
             }
 
-            var subcategoryCategory = await _context.SubcategoryCategory
+            var subcategoryCategory = await _context.SubcategoryCategories
                 .Include(s => s.ProductSubcategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (subcategoryCategory == null)
@@ -51,6 +52,7 @@ namespace PracticeWebApp.Controllers
         // GET: SubcategoryCategories/Create
         public IActionResult Create()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             ViewData["ProductSubcategoryId"] = new SelectList(_context.ProductSubcategories, "Id", "Id");
             return View();
         }
@@ -75,12 +77,13 @@ namespace PracticeWebApp.Controllers
         // GET: SubcategoryCategories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var subcategoryCategory = await _context.SubcategoryCategory.FindAsync(id);
+            var subcategoryCategory = await _context.SubcategoryCategories.FindAsync(id);
             if (subcategoryCategory == null)
             {
                 return NotFound();
@@ -128,12 +131,13 @@ namespace PracticeWebApp.Controllers
         // GET: SubcategoryCategories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var subcategoryCategory = await _context.SubcategoryCategory
+            var subcategoryCategory = await _context.SubcategoryCategories
                 .Include(s => s.ProductSubcategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (subcategoryCategory == null)
@@ -149,15 +153,15 @@ namespace PracticeWebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var subcategoryCategory = await _context.SubcategoryCategory.FindAsync(id);
-            _context.SubcategoryCategory.Remove(subcategoryCategory);
+            var subcategoryCategory = await _context.SubcategoryCategories.FindAsync(id);
+            _context.SubcategoryCategories.Remove(subcategoryCategory);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SubcategoryCategoryExists(int id)
         {
-            return _context.SubcategoryCategory.Any(e => e.Id == id);
+            return _context.SubcategoryCategories.Any(e => e.Id == id);
         }
     }
 }

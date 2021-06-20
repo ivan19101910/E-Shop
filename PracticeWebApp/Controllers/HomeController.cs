@@ -5,27 +5,38 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PracticeWebApp.Models;
 
-namespace fff.Controllers
+namespace PracticeWebApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly AppDbContext _context;
+
+        public HomeController(AppDbContext context, ILogger<HomeController> logger)
         {
+            _context = context;
             _logger = logger;
         }
+
+        //public HomeController(ILogger<HomeController> logger)
+        //{
+        //    _logger = logger;
+        //}
         [Authorize(Roles = "Адміністратор, Покупець")]
         public IActionResult Index()
         {
-            return View();
+            ViewData["AllCategories"] = _context.GetAllCategories();
+            return View();        
         }
 
         public IActionResult Privacy()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View();
         }
 

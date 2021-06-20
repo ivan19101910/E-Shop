@@ -1,24 +1,26 @@
 ﻿@model PracticeWebApp.Models.LoginModel
 
-<h2>Вхід у аккаунт</h2>
-
 <a asp-action="Register" asp-controller="Account">Реєстрація</a>
 
-<form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
-    <div class="validation" asp-validation-summary="ModelOnly"></div>
-    <div>
-        <div class="form-group">
-            <label asp-for="Email">Введіть Email</label>
-            <input type="text" asp-for="Email" />
-            <span asp-validation-for="Email" />
-        </div>
-        <div class="form-group">
-            <label asp-for="Password">Введіть пароль</label>
-            <input asp-for="Password" />
-            <span asp-validation-for="Password" />
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Увійти" class="btn" />
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <form class="form-horizontal" asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
+                <div class="validation" asp-validation-summary="ModelOnly"></div>
+                <span class="heading">АВТОРИЗАЦІЯ</span>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="inputEmail" placeholder="E-mail" asp-for="Email">
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="form-group help">
+                    <input type="password" class="form-control" id="inputPassword" placeholder="Password" asp-for="Password">
+                    <i class="fa fa-lock"></i>
+                    <a href="#" class="fa fa-question-circle"></a>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">ВХІД</button>
+                </div>
+            </form>
         </div>
     </div>
-</form>
+</div>

@@ -21,6 +21,7 @@ namespace PracticeWebApp.Controllers
         // GET: UserRoles
         public async Task<IActionResult> Index()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View(await _context.UserRoles.ToListAsync());
         }
 
@@ -45,6 +46,7 @@ namespace PracticeWebApp.Controllers
         // GET: UserRoles/Create
         public IActionResult Create()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View();
         }
 
@@ -67,6 +69,7 @@ namespace PracticeWebApp.Controllers
         // GET: UserRoles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
@@ -118,6 +121,7 @@ namespace PracticeWebApp.Controllers
         // GET: UserRoles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();

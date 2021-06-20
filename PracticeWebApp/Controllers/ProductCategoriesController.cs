@@ -22,6 +22,7 @@ namespace PracticeWebApp.Controllers
         // GET: ProductCategories
         public async Task<IActionResult> Index()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View(await _context.ProductCategories.ToListAsync());
         }
 
@@ -48,6 +49,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public IActionResult Create()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View();
         }
 
@@ -72,6 +74,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
@@ -125,6 +128,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();

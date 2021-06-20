@@ -21,6 +21,7 @@ namespace PracticeWebApp.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View();
         }
         [HttpPost]
@@ -53,6 +54,7 @@ namespace PracticeWebApp.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View();
         }
         [HttpPost]

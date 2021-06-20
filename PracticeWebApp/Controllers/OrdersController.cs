@@ -21,6 +21,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор, Покупець")]
         public async Task<IActionResult> Index()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
             var appDbContext = _context.Orders.Include(o => o.Status).Include(o => o.User).Where(x => x.UserId == user.Id);
             return View(await appDbContext.ToListAsync());
@@ -29,6 +30,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> IndexAll()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             var appDbContext = _context.Orders.Include(o => o.Status).Include(o => o.User);
             return View(await appDbContext.ToListAsync());
         }
@@ -36,6 +38,7 @@ namespace PracticeWebApp.Controllers
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
@@ -62,6 +65,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор, Покупець")]
         public IActionResult Create()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
             var cartProducts = _context.CartProducts.Where(x => x.UserId == user.Id).Include(x=>x.Product);
             decimal sum = 0;
@@ -115,6 +119,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
@@ -170,6 +175,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();

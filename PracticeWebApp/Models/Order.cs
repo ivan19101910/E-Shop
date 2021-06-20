@@ -34,6 +34,7 @@ namespace PracticeWebApp.Models
         [DisplayName("Спосіб доставки")]
         public virtual PostService PostService { get; set; }
         public List<Product> Products { get; set; } = new List<Product>();
-        public List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
+        public List<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();       
+        
     }
 }

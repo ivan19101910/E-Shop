@@ -50,6 +50,7 @@ namespace PracticeWebApp.Controllers
         [Authorize]
         public IActionResult Create(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email");
             ViewData["ProdId"] = id;
@@ -58,6 +59,7 @@ namespace PracticeWebApp.Controllers
         [Authorize]
         public IActionResult CreateReply(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email");
             ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
             ViewData["ProdId"] = _context.Comments.Where(x=>x.Id == id).FirstOrDefault().ProductId;
@@ -108,6 +110,7 @@ namespace PracticeWebApp.Controllers
         // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
@@ -163,6 +166,7 @@ namespace PracticeWebApp.Controllers
         // GET: Comments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();

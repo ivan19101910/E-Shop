@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace PracticeWebApp.Models
 {
@@ -8,7 +10,7 @@ namespace PracticeWebApp.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<ProductSubcategory> ProductSubcategories { get; set; }
-        public DbSet<ProductSubcategory> SubcategoryCategories { get; set; }
+        //public DbSet<ProductSubcategory> SubcategoryCategories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
@@ -16,12 +18,22 @@ namespace PracticeWebApp.Models
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<SubcategoryCategory> SubcategoryCategory { get; set; }
+        public DbSet<SubcategoryCategory> SubcategoryCategories { get; set; }
 
         public DbSet<PostService> PostServices { get; set; }
+
+        public List<ProductCategory> GetAllCategories()
+        {
+            return new List<ProductCategory>
+                (ProductCategories
+                .Include(x => x.ProductSubcategories)
+                .ThenInclude(x => x.SubcategoryCategories));
+        }
+
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
+            //Database.EnsureDeleted();
             Database.EnsureCreated();          
         }
 
@@ -119,16 +131,18 @@ namespace PracticeWebApp.Models
             });
 
             byte[] bytes = { 0, 0, 0, 25 };
+            //ImageConverter imageConverter = new ImageConverter();
+            //byte[] xByte = (byte[])imageConverter.ConvertTo(image, typeof(byte[]));
 
             modelBuilder.Entity<Product>().HasData(
             new Product[]
             {
-                new Product{ Id=1,Image = bytes, Price= 1001,Name="test1",Description="Description", SubcategoryCategoryId = 1},
-                new Product{ Id=2,Image = bytes, Price= 1002,Name="test2",Description="Description", SubcategoryCategoryId = 1},
-                new Product{ Id=3,Image = bytes, Price= 1003,Name="test3",Description="Description", SubcategoryCategoryId = 2},
-                new Product{ Id=4,Image = bytes, Price= 1004,Name="test4",Description="Description", SubcategoryCategoryId = 2},
-                new Product{ Id=5,Image = bytes, Price= 1005,Name="test5",Description="Description", SubcategoryCategoryId = 3},
-                new Product{ Id=6,Image = bytes, Price= 1006,Name="test6",Description="Description", SubcategoryCategoryId = 3},
+                new Product{ Id=1,Image = bytes, Price= 1001,Name="Повітряний фільтр 1",Description="Description", SubcategoryCategoryId = 1},
+                new Product{ Id=2,Image = bytes, Price= 1002,Name="Повітряний фільтр 2",Description="Description", SubcategoryCategoryId = 1},
+                new Product{ Id=3,Image = bytes, Price= 1003,Name="Масляний фільтр 1",Description="Description", SubcategoryCategoryId = 2},
+                new Product{ Id=4,Image = bytes, Price= 1004,Name="Масляний фільтр 2",Description="Description", SubcategoryCategoryId = 2},
+                new Product{ Id=5,Image = bytes, Price= 1005,Name="Моторне масло 1",Description="Description", SubcategoryCategoryId = 3},
+                new Product{ Id=6,Image = bytes, Price= 1006,Name="Моторне масло 2",Description="Description", SubcategoryCategoryId = 3},
             });
 
             modelBuilder.Entity<OrderStatus>().HasData(

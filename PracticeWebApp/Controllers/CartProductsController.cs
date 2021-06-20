@@ -22,6 +22,7 @@ namespace PracticeWebApp.Controllers
         // GET: CartProducts
         public async Task<IActionResult> Index()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
 
             var appDbContext = _context.CartProducts.Include(c => c.Product).Include(c => c.User).Where(x=>x.UserId == user.Id);
@@ -31,7 +32,6 @@ namespace PracticeWebApp.Controllers
         [Authorize]
         public async Task<IActionResult> Buy(int? id)
         {
-            //var username = User.Identity.Name;
             var user = _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefault();
             
             var addedProduct = _context.Products.Where(x=>x.Id == id).Select(x => x).FirstOrDefault();
@@ -48,7 +48,9 @@ namespace PracticeWebApp.Controllers
                 _context.Add(new CartProduct { UserId = user.Id, ProductId = addedProduct.Id, Amount = 1 });
             }          
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return Redirect($"~/Products/Index/{addedProduct.SubcategoryCategoryId}");
+            //return Ok();
         }
 
         //[HttpPost, ActionName("Delete")]

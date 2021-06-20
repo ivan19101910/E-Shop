@@ -22,7 +22,8 @@ namespace PracticeWebApp.Controllers
         // GET: ProductSubcategories
         public async Task<IActionResult> Index(int? id)
         {
-            var subcategories = _context.SubcategoryCategories.Include(p => p.Category).Select(x=>x);
+            ViewData["AllCategories"] = _context.GetAllCategories();
+            var subcategories = _context.ProductSubcategories.Include(p => p.Category).Select(x=>x);
             if (id.HasValue)
             {
                 subcategories = subcategories.Where(x => x.CategoryId == id);
@@ -43,7 +44,7 @@ namespace PracticeWebApp.Controllers
                 return NotFound();
             }
 
-            var productSubcategory = await _context.SubcategoryCategories
+            var productSubcategory = await _context.ProductSubcategories
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (productSubcategory == null)
@@ -58,6 +59,7 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public IActionResult Create()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "Id");
             return View();
         }
@@ -89,7 +91,7 @@ namespace PracticeWebApp.Controllers
                 return NotFound();
             }
 
-            var productSubcategory = await _context.SubcategoryCategories.FindAsync(id);
+            var productSubcategory = await _context.ProductSubcategories.FindAsync(id);
             if (productSubcategory == null)
             {
                 return NotFound();
@@ -139,12 +141,13 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var productSubcategory = await _context.SubcategoryCategories
+            var productSubcategory = await _context.ProductSubcategories
                 .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (productSubcategory == null)
@@ -161,15 +164,15 @@ namespace PracticeWebApp.Controllers
         [Authorize(Roles = "Адміністратор")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productSubcategory = await _context.SubcategoryCategories.FindAsync(id);
-            _context.SubcategoryCategories.Remove(productSubcategory);
+            var productSubcategory = await _context.ProductSubcategories.FindAsync(id);
+            _context.ProductSubcategories.Remove(productSubcategory);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductSubcategoryExists(int id)
         {
-            return _context.SubcategoryCategories.Any(e => e.Id == id);
+            return _context.ProductSubcategories.Any(e => e.Id == id);
         }
     }
 }

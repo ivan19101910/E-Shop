@@ -21,12 +21,14 @@ namespace PracticeWebApp.Controllers
         // GET: PostServices
         public async Task<IActionResult> Index()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View(await _context.PostServices.ToListAsync());
         }
 
         // GET: PostServices/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
@@ -45,6 +47,7 @@ namespace PracticeWebApp.Controllers
         // GET: PostServices/Create
         public IActionResult Create()
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             return View();
         }
 
@@ -67,6 +70,7 @@ namespace PracticeWebApp.Controllers
         // GET: PostServices/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
@@ -118,6 +122,7 @@ namespace PracticeWebApp.Controllers
         // GET: PostServices/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ViewData["AllCategories"] = _context.GetAllCategories();
             if (id == null)
             {
                 return NotFound();
