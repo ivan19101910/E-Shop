@@ -96,7 +96,7 @@ namespace PracticeWebApp.Controllers
             {               
                 comment.UserId = user.Id;
                 comment.RepliedCommentId = id;
-                comment.ProductId = id;
+                comment.ProductId = repliedComment.ProductId;
                 comment.CreatedDateTime = DateTime.UtcNow;
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
@@ -194,7 +194,8 @@ namespace PracticeWebApp.Controllers
             var comment = await _context.Comments.FindAsync(id);
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            return Redirect($"~/Products/Details/{comment.ProductId}");
         }
 
         private bool CommentExists(int id)
