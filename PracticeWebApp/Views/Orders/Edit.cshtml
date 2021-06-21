@@ -33,6 +33,26 @@
                 <span asp-validation-for="StatusId" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="PostServiceId" class="control-label"></label>
+                <select asp-for="PostServiceId" class="form-control" asp-items="ViewBag.PostService"></select>
+                <span asp-validation-for="PostServiceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostDepartmentAddress" class="control-label"></label>
+                <input asp-for="PostDepartmentAddress" class="form-control" />
+                <span asp-validation-for="PostDepartmentAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedDateTime" class="control-label"></label>
+                <input asp-for="CreatedDateTime" class="form-control"readonly="@(true)" />
+                <span asp-validation-for="CreatedDateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Зберегти" class="btn btn-primary" />
             </div>
         </form>
@@ -40,7 +60,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Повернутися до списку замовлень</a>
+    <a asp-action="IndexAll">Повернутися до списку замовлень</a>
 </div>
 
 @section Scripts {

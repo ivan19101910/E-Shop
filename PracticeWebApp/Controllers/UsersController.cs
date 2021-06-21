@@ -102,7 +102,7 @@ namespace PracticeWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Адміністратор")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Address,DateOfBirth,PhoneNumber,UserRoleId")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Address,DateOfBirth,PhoneNumber,UserRoleId,Password,Email")] User user)
         {
             if (id != user.Id)
             {
@@ -129,9 +129,67 @@ namespace PracticeWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserRoleId"] = new SelectList(_context.UserRoles, "Id", "Id", user.UserRoleId);
+            ViewData["UserRoleId"] = new SelectList(_context.UserRoles, "Id", "Name", user.UserRoleId);
             return View(user);
         }
+
+
+        [Authorize(Roles = "Адміністратор, Покупець")]
+        public async Task<IActionResult> EditByEmail(int? id)
+        {
+            ViewData["AllCategories"] = _context.GetAllCategories();
+            var user = await _context.Users.Where(x => x.Email == User.Identity.Name).Select(x => x).FirstOrDefaultAsync();
+
+            //var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            ViewData["UserRoleId"] = new SelectList(_context.UserRoles.Where(x=>x.Id == user.UserRoleId), "Id", "Name", user.UserRoleId);
+            //ViewData["UserRole"] = 
+            //    _context.Users
+            //    .Where(x => x.Email == User.Identity.Name)
+            //    .Include(x=>x.UserRole)
+            //    .Select(x => x)
+            //    .FirstOrDefault().UserRole.Name;
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Адміністратор, Покупець")]
+        public async Task<IActionResult> EditByEmail(int id, [Bind("Id,FirstName,LastName,Address,DateOfBirth,PhoneNumber,UserRoleId,Password,Email")] User user)
+        {
+            if (id != user.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(user);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(user.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                //return RedirectToAction(nameof(Index));
+                return Redirect($"~/Home/Index");
+            }
+            ViewData["UserRoleId"] = new SelectList(_context.UserRoles, "Id", "Name", user.UserRoleId);
+            return View(user);
+        }
+
 
         // GET: Users/Delete/5
         [Authorize(Roles = "Адміністратор")]

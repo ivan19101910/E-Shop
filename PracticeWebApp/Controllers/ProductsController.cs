@@ -22,14 +22,25 @@ namespace PracticeWebApp.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, string name, string category)
         {
             var products = _context.Products.Include(p => p.SubcategoryCategory).Select(x => x);
-            if (id.HasValue)
+            if (!String.IsNullOrEmpty(name))
+            {
+                products = products.Where(w => w.Name == name);
+            }
+            if (!String.IsNullOrEmpty(category))
+            {
+                products = products.Where(w => w.SubcategoryCategory.Name == category);
+            }
+
+
+            if (id.HasValue && category == null)
             {
                 products = products.Where(x => x.SubcategoryCategoryId == id);
             }
             ViewData["AllCategories"] = _context.GetAllCategories();
+            ViewData["AllCategoriesSelectList"] = new SelectList(_context.SubcategoryCategories, "Name", "Name");
             return View(await products.ToListAsync());
         }
 

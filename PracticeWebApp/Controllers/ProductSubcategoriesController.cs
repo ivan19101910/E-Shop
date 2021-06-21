@@ -60,7 +60,8 @@ namespace PracticeWebApp.Controllers
         public IActionResult Create()
         {
             ViewData["AllCategories"] = _context.GetAllCategories();
-            ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "Name");
+            //ViewData["Category"] = new _context.ProductCategories
             return View();
         }
 
@@ -76,9 +77,10 @@ namespace PracticeWebApp.Controllers
             {
                 _context.Add(productSubcategory);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index(productSubcategory.CategoryId)));
+                return Redirect($"~/ProductSubcategories/Index/{productSubcategory.CategoryId}");
             }
-            ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "Id", productSubcategory.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "Name", productSubcategory.CategoryId);
             return View(productSubcategory);
         }
 
@@ -96,7 +98,8 @@ namespace PracticeWebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "Id", productSubcategory.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "Name", productSubcategory.CategoryId);
+            ViewData["Category"] = _context.ProductCategories.Where(x => x.Id == id).Select(x => x);
             return View(productSubcategory);
         }
 
@@ -133,7 +136,7 @@ namespace PracticeWebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "Id", productSubcategory.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.ProductCategories, "Id", "Name", productSubcategory.CategoryId);
             return View(productSubcategory);
         }
 

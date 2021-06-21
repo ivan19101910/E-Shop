@@ -46,10 +46,11 @@ namespace PracticeWebApp.Controllers
             else
             {
                 _context.Add(new CartProduct { UserId = user.Id, ProductId = addedProduct.Id, Amount = 1 });
+                return Redirect($"~/Products/Index/{addedProduct.SubcategoryCategoryId}");
             }          
             await _context.SaveChangesAsync();
             //return RedirectToAction(nameof(Index));
-            return Redirect($"~/Products/Index/{addedProduct.SubcategoryCategoryId}");
+            return RedirectToAction(nameof(Index));
             //return Ok();
         }
 

@@ -11,7 +11,9 @@ namespace PracticeWebApp.Models
         public int Id { get; set; }
         [DisplayName("Назва")]
         public string Name { get; set; }
+        [DisplayName("Підкатегорія")]
         public int ProductSubcategoryId { get; set; }
+        [DisplayName("Підкатегорія")]
         public virtual ProductSubcategory ProductSubcategory { get; set; }
         public virtual ICollection<Product> Product { get; set; }
     }

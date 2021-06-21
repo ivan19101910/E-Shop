@@ -6,7 +6,7 @@
 
 @*<h1>Delete</h1>*@
 
-<h3>Ви впевнені, що хочете видалити категорію товару?</h3>
+<h3>Ви впевнені, що хочете видалити цю категорію товару?</h3>
 <div>
     @*<h4>SubcategoryCategory</h4>*@
     <hr />
@@ -28,6 +28,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Видалити" class="btn btn-danger" /> |
-        <a asp-action="Index">Повернутися до списку категорій в підкатегорії</a>
+        <a asp-action="Index" asp-route-id="@Model.Id">Повернутися до списку категорій в підкатегорії</a>
     </form>
 </div>

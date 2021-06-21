@@ -132,6 +132,7 @@ namespace PracticeWebApp.Controllers
             }
             ViewData["StatusId"] = new SelectList(_context.OrderStatuses, "Id", "Name", order.StatusId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", order.UserId);
+            ViewData["PostService"] = new SelectList(_context.PostServices, "Id", "Name", order.PostServiceId);
             return View(order);
         }
 
@@ -139,7 +140,7 @@ namespace PracticeWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Адміністратор")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Total,Description,StatusId")] Order order)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Total,Description,StatusId, PostServiceId, City, PostDepartmentAddress, CreatedDateTime")] Order order)
         {
             if (id != order.Id)
             {
@@ -151,6 +152,7 @@ namespace PracticeWebApp.Controllers
                 try
                 {
                     _context.Update(order);
+                    //order.CreatedDateTime = DateTime.UtcNow;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -164,10 +166,11 @@ namespace PracticeWebApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexAll));
             }
             ViewData["StatusId"] = new SelectList(_context.OrderStatuses, "Id", "Id", order.StatusId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Email", order.UserId);
+            ViewData["PostService"] = new SelectList(_context.PostServices, "Id", "Name", order.PostServiceId);
             return View(order);
         }
 
@@ -202,7 +205,15 @@ namespace PracticeWebApp.Controllers
             var order = await _context.Orders.FindAsync(id);
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (User.IsInRole("Адміністратор"))
+            {
+                return RedirectToAction(nameof(IndexAll));
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            
         }
 
         private bool OrderExists(int id)

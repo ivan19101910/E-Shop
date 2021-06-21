@@ -11,6 +11,18 @@
         <a asp-action="Create">Створити новий товар</a>
     </p>
 }
+<form asp-controller="Products" asp-action="Index">
+    <p>
+        Назва товару: <input type="text" name="name" />
+
+        @*Категорія: <input type="text" name="category" />*@
+
+        Категорія:    <select name="category" asp-items="ViewBag.AllCategoriesSelectList" ></select>
+
+
+        <input type="submit" value="Пошук" />
+    </p>
+</form>
 <div class="col-md-12 products">
     <div class="row">
         @foreach (var item in Model)

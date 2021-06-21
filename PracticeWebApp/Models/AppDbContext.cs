@@ -90,7 +90,7 @@ namespace PracticeWebApp.Models
             {
                 new User {Id=1, FirstName="Tom", LastName="Moriarty", Address = "Степана Бандери 28а", DateOfBirth = DateTime.Now,
                     PhoneNumber = "+38096758", Email="test@gmail.com", Password="1234", UserRoleId = 1},
-                new User {Id=2, FirstName="Alex", LastName="Svytshch", Address = "Zubrivska 19", DateOfBirth = DateTime.Now,
+                new User {Id=2, FirstName="Олег", LastName="Свищ", Address = "Зубрівська 19", DateOfBirth = DateTime.Now,
                     PhoneNumber = "+38096758",Email="test2@gmail.com", Password="12345", UserRoleId = 2}
             });
 

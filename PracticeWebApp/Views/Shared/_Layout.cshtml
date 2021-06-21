@@ -35,7 +35,7 @@
                                 Товари
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                @if (ViewBag.Query != null)
+                                @if (ViewBag.AllCategories != null)
                                 {
                                     @foreach (ProductCategory category in ViewBag.AllCategories)
                                     {
@@ -70,7 +70,7 @@
                 <div>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a>Користувач: @User.Identity.Name</a>
+                        <a asp-controller="Users" asp-action="EditByEmail">Користувач: @User.Identity.Name</a>
                         <a href="/Account/Logout">
                             Вийти
                         </a>
